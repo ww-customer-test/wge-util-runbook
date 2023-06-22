@@ -31,12 +31,6 @@ To resinstall flux, first install the flux CLI. The following example installs v
 ```bash
 export FLUX_VERSION=2.0.0-rc.5
 curl -s https://fluxcd.io/install.sh | bash
-flux install
-```
-
-This will reinstall the Flux custom resource definitions and controllers but not the custom resources. If you are reinstalling a different version of Flux you will need to update the `gotk-components.yaml` file in the git repository to match the version of Flux you are installing. To do this run the following command.
-
-```bash
 flux install --export > gotk-components.yaml
 ```
 
@@ -50,7 +44,7 @@ git commit -m "Update gotk-components.yaml"
 git push
 ```
 
-To reinstall the custom resources.
+to reinstall Flux custom resource definitions and controllers and custom resources.
   
 ```bash
 git clone $url
