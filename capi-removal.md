@@ -10,13 +10,12 @@ https://cluster-api.sigs.k8s.io/clusterctl/commands/delete.html
 
 #### *WARNING* : The following steps are to remove cert manager resources
 
-#####  If cert-manager was not used prior to clusterctl. You can remove it in its entirety by deleting the namespace and then continuing on
+#####  If cert-manager was NOT used prior to clusterctl. You can remove it in its entirety by deleting the namespace and then continuing on
     kubectl delete ns cert-manager
 
-#####  If cert-manager was used prior to clusterctl. Use the following   
+#####  If cert-manager was used prior to clusterctl. Use the following to delete only clusterctl related cert-manager resources
 
-    TODO
-
+    kubectl delete --all-namespaces certficates -l clusterctl.cluster.x-k8s.io=""
 
 ##### This command deletes all remaining CAPI CRDs including the Cert-manager CRDs that were installed via CLI
 
@@ -29,5 +28,8 @@ https://cluster-api.sigs.k8s.io/clusterctl/commands/delete.html
 
     kubectl delete ns -l clusterctl.cluster.x-k8s.io=""
     kubectl delete crd -l clusterctl.cluster.x-k8s.io=""
-    kubectl delete crd providers.clusterctl.cluster.x-k8s.io
+    kubectl delete crd providers.clusterctl.
+    kubectl delete --all-namespaces certficates -l clusterctl.cluster.x-k8s.io=""
+    
+    
 
