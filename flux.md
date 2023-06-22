@@ -44,7 +44,7 @@ git commit -m "Update gotk-components.yaml"
 git push
 ```
 
-to reinstall Flux custom resource definitions and controllers and custom resources.
+To reinstall Flux custom resource definitions and controllers and custom resources.
   
 ```bash
 git clone $url
