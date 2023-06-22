@@ -49,7 +49,7 @@ To reinstall Flux custom resource definitions and controllers and custom resourc
 ```bash
 git clone $url
 repo_name="$(echo $git_url | awk -F/ '{print $NF}')"
-kubectl apply -f $flux_path/flux-system/gotk-sync.yaml
+kubectl apply -k $flux_path/flux-system
 ```
 
 This will reinstall the flux-system GitRepository and Kustomization which will in turn reinstall the other custom resources. If you have any Flux custom resources that are not installed directly or indirectly by the flux-system Kustomization you will need to reinstall them manually.
