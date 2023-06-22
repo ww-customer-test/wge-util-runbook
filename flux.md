@@ -37,10 +37,10 @@ Retaining the flux-system namespace is optional. Retaining it will prevent the d
 
 ## Reinstall Flux
 
-To resinstall flux, first install the flux CLI. The following example installs version 0.38.0.
+To resinstall flux, first install the flux CLI. The following example installs version 2.0.0-rc.5. If you omit the version it will install the latest version.
 
 ```bash
-export FLUX_VERSION=0.38.0
+export FLUX_VERSION=2.0.0-rc.5
 curl -s https://fluxcd.io/install.sh | bash
 flux version
 ```
