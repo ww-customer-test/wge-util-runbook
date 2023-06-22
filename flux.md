@@ -34,14 +34,28 @@ curl -s https://fluxcd.io/install.sh | bash
 flux install
 ```
 
-This will reinstall the Flux custom resource definitions and controllers but not the custom resources.
+This will reinstall the Flux custom resource definitions and controllers but not the custom resources. If you are reinstalling a different version of Flux you will need to update the `gotk-components.yaml` file in the git repository to match the version of Flux you are installing. To do this run the following command.
+
+```bash
+flux install --export > gotk-components.yaml
+```
+
+And replace the file in the git repository with the new version, i.e.
+
+```bash
+git clone $url
+cp gotk-components.yaml $flux_path/flux-system/gotk-components.yaml
+git add $flux_path/flux-system/gotk-components.yaml
+git commit -m "Update gotk-components.yaml"
+git push
+```
 
 To reinstall the custom resources.
   
 ```bash
 git clone $url
 repo_name="$(echo $git_url | awk -F/ '{print $NF}')"
-kubectl apply -f /$flux_path/flux-system/gotk-sync.yaml
+kubectl apply -f $flux_path/flux-system/gotk-sync.yaml
 ```
 
 This will reinstall the flux-system GitRepository and Kustomization which will in turn reinstall the other custom resources. If you have any Flux custom resources that are not installed directly or indirectly by the flux-system Kustomization you will need to reinstall them manually.
