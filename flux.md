@@ -14,6 +14,7 @@ flux_path="$(kubectl get kustomization -n flux-system flux-system -o=jsonpath='{
 echo "flux_path=$flux_path"
 git_url="$(kubectl get gitrepository -n flux-system flux-system -o=jsonpath='{@.spec.url}')"
 echo "git_url=$git_url"
+repo_name="$(echo $git_url | awk -F/ '{print $NF}')"
 ```
 
 Now you can uninstall Flux.
@@ -37,8 +38,9 @@ flux install --export > gotk-components.yaml
 And replace the file in the git repository with the new version, i.e.
 
 ```bash
-git clone $url
-cp gotk-components.yaml $flux_path/flux-system/gotk-components.yaml
+git clone $git_url
+cp gotk-components.yaml $repo_name/$flux_path/flux-system/gotk-components.yaml
+pushd $repo_name
 git add $flux_path/flux-system/gotk-components.yaml
 git commit -m "Update gotk-components.yaml"
 git push
@@ -47,9 +49,7 @@ git push
 To reinstall Flux custom resource definitions and controllers and custom resources.
   
 ```bash
-git clone $url
-repo_name="$(echo $git_url | awk -F/ '{print $NF}')"
-kubectl apply -k $flux_path/flux-system
+flux bootstrap git --url $git_url --path $flux_path
 ```
 
 This will reinstall the flux-system GitRepository and Kustomization which will in turn reinstall the other custom resources. If you have any Flux custom resources that are not installed directly or indirectly by the flux-system Kustomization you will need to reinstall them manually.
