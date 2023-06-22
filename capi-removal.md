@@ -6,7 +6,7 @@ https://cluster-api.sigs.k8s.io/clusterctl/commands/delete.html
 
 ##### The following command deletes all of the provider including CRDs and namespaces except the provider resource
 
-    clusterctl delete --all --include-crd --include-namespaces
+    clusterctl delete --all --include-crd --include-namespace
 
 #### *WARNING* : The following steps are to remove cert manager resources
 
