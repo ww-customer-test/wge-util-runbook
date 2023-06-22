@@ -7,17 +7,6 @@ Whatever mechanism you use, if you subsequently need to uninstall and reinstall 
 
 ## Uninstall Flux
 
-If you uninstall Flux using the flux uninstall command it will remove all flux custom resources too. In the case of HelmReleases and also for  Kustomizations that have prune set to true this will result in the removal of all the resources that were deployed by Flux. If you want to keep these resources you should first suspend the HelmReleases and Kustomizations.
-
-```bash
-source <(kubectl get kustomizations -A \
-  -o=jsonpath='{range .items[*]}{"flux suspend kustomization -n "}\
-  {.metadata.namespace}{" "}{.metadata.name}{"\n"}{end}')
-source <(kubectl get HelmReleases -A \
-  -o=jsonpath='{range .items[*]}{"echo flux suspend helmrelease -n "}\
-  {.metadata.namespace}{" "}{.metadata.name}{"\n"}{end}')
-```
-
 Capture the flux-system GitRepository url and flux-system Kustomization path for use during reinstallation.
 
 ```bash
@@ -33,7 +22,7 @@ Now you can uninstall Flux.
 flux uninstall --keep-namespace --silent
 ```
 
-Retaining the flux-system namespace is optional. Retaining it will prevent the deletion of secrets used by GitRepository and HelmRepository resources in that namespace.
+Retaining the flux-system namespace is optional. Retaining it will prevent the deletion of secrets used by GitRepository and HelmRepository resources in that namespace. Flux uninstall will remove the Flux finalizer from the custom resources so objects deployed by Flux will not be deleted.
 
 ## Reinstall Flux
 
@@ -42,17 +31,17 @@ To resinstall flux, first install the flux CLI. The following example installs v
 ```bash
 export FLUX_VERSION=2.0.0-rc.5
 curl -s https://fluxcd.io/install.sh | bash
-flux version
+flux install
 ```
 
-This will reinstall the Flux custom resource definitions and controllers but not the custom resource.
+This will reinstall the Flux custom resource definitions and controllers but not the custom resources.
 
 To reinstall the custom resources.
   
 ```bash
 git clone $url
-repo_name="$(echo $url | awk -F/ '{print $NF}')"
-kubectl apply -f /$path/flux-system/gotk-sync.yaml
+repo_name="$(echo $git_url | awk -F/ '{print $NF}')"
+kubectl apply -f /$flux_path/flux-system/gotk-sync.yaml
 ```
 
 This will reinstall the flux-system GitRepository and Kustomization which will in turn reinstall the other custom resources. If you have any Flux custom resources that are not installed directly or indirectly by the flux-system Kustomization you will need to reinstall them manually.
