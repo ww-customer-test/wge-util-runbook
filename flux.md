@@ -25,9 +25,9 @@ flux uninstall --keep-namespace --silent
 
 Retaining the flux-system namespace is optional. Retaining it will prevent the deletion of secrets used by GitRepository and HelmRepository resources in that namespace. Flux uninstall will remove the Flux finalizer from the custom resources so objects deployed by Flux will not be deleted.
 
-## Reinstall Flux
+## Reinstall Flux - New Version of Flux
 
-To resinstall flux, first install the flux CLI. The following example installs version 2.0.0-rc.5. If you omit the version it will install the latest version.
+To reinstall a different version of flux, first install the new version of the flux CLI. The following example installs version 2.0.0-rc.5. If you omit the version it will install the latest version. If you plan to reinstall the same version of Flux you can skip this step.
 
 ```bash
 export FLUX_VERSION=2.0.0-rc.5
@@ -46,6 +46,8 @@ git commit -m "Update gotk-components.yaml"
 git push
 popd
 ```
+
+## Redeploy Flux
 
 To reinstall Flux custom resource definitions and controllers and custom resources.
   
