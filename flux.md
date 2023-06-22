@@ -44,6 +44,7 @@ pushd $repo_name
 git add $flux_path/flux-system/gotk-components.yaml
 git commit -m "Update gotk-components.yaml"
 git push
+popd
 ```
 
 To reinstall Flux custom resource definitions and controllers and custom resources.
